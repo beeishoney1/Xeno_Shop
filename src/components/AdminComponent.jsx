@@ -452,29 +452,29 @@ const AdminComponent = () => {
                       </div>
                       
                       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-2">
-                        {formData.altImages.map((img, index) => (
-                          <div key={img.id || index} className="relative group">
-                            <div className="aspect-square bg-gray-700 rounded overflow-hidden">
-                              <img
-                                src={img.preview.startsWith('blob:') 
-                                     ? img.preview 
-                                     : `https://beeishappy15.pythonanywhere.com${img.preview}`}
-                                alt={`Additional ${index + 1}`}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => img.id ? handleDeleteAltImage(img.id) : removeAltImage(index)}
-                              className="absolute top-1 right-1 bg-red-500/80 hover:bg-red-400 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
-                          </div>
-                        ))}
-                      </div>
+  {formData.altImages.map((img, index) => (
+    <div key={img.id || index} className="relative group">
+      <div className="aspect-square bg-gray-700 rounded overflow-hidden">
+        <img
+          src={img.preview.startsWith('blob:') 
+               ? img.preview 
+               : `https://beeishappy15.pythonanywhere.com${img.preview}`}
+          alt={`Additional ${index + 1}`}
+          className="w-full h-full object-cover"
+        />
+      </div>
+     <button
+  type="button"
+  onClick={() => img.id ? handleDeleteAltImage(img.id) : removeAltImage(index)}
+  className="absolute top-1 right-1 bg-red-500/80 rounded-full p-1"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+</button>
+    </div>
+  ))}
+</div>
                     </div>
 
                     {/* Name Field */}
