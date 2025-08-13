@@ -126,6 +126,11 @@ const Home = () => {
           </div>
         ) : (
           <div className="container mx-auto px-4 py-8">
+            <div className="mb-4 px-2 text-center">
+  <p className="text-purple-300 text-sm sm:text-base">
+    If you want to buy Account, Please Contact Admin directly
+  </p>
+</div>
             {/* Search Bar */}
             <div className="mb-8 mx-auto max-w-md">
               <motion.div

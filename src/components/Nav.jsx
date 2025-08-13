@@ -292,9 +292,9 @@ const ADMIN_PIN = "1234342342434222345673463"; // Replace with your actual PIN
               
               <div className="flex items-center justify-center mb-4">
                 <FaTelegramPlane className="text-3xl text-blue-400 mr-3" />
-                <h3 className="text-xl font-bold text-white">Our Telegram Channel</h3>
+                <h3 className="text-xl font-bold text-white">Direct To Admin</h3>
               </div>
-              <p className="text-gray-300 mb-4 text-center">Join our Telegram for exclusive offers!</p>
+              <p className="text-gray-300 mb-4 text-center">Join our Telegram for more offers!</p>
               
               <div className="bg-gray-700 p-3 rounded-lg mb-4 break-all">
                 <p className="text-white font-mono text-sm md:text-base">https://t.me/XenoFav_M</p>
