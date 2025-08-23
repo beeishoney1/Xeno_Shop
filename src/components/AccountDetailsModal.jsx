@@ -18,18 +18,15 @@ const AccountDetailsModal = ({ account, onClose }) => {
         setLoadingImages(true);
         setLoadingDetails(true);
 
-        // Fetch additional images
         const imagesResponse = await altImageAPI.getAllAltImages();
         const imagesData = imagesResponse?.alt_images || [];
         
-        // Filter images for the current account
         const accountImages = imagesData.filter(img => 
           img?.accountId === account?.id || 
           img?.account_id === account?.id ||
           img?.account === account?.id
         );
 
-        // Process images to handle different API field names
         const processedImages = accountImages.map(img => ({
           id: img.id,
           url: img.image_url || img.url || img.image,
@@ -38,7 +35,6 @@ const AccountDetailsModal = ({ account, onClose }) => {
 
         setAltImages(processedImages);
 
-        // Fetch additional account details using getAccountById
         const detailsResponse = await accountAPI.getAccountById(account?.id);
         setAccountDetails(detailsResponse?.account || null);
 
@@ -100,7 +96,9 @@ const AccountDetailsModal = ({ account, onClose }) => {
   return (
     <>
       {/* Main Modal */}
-      <div className="fixed inset-0 z-50 bg-gray-900 overflow-y-auto">
+      <div 
+        className="fixed inset-0 z-50 overflow-y-auto bg-cover bg-center bg-[url('/bg.jpg')] lg:bg-[url('/dsbg.jpg')]"
+      >
         {/* Header */}
         <div className="sticky top-0 z-10 bg-gray-900/80 backdrop-blur-sm p-4 flex items-center border-b border-gray-800">
           <button 
@@ -119,7 +117,6 @@ const AccountDetailsModal = ({ account, onClose }) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Image Gallery */}
             <div className="space-y-4">
-              {/* Main Image */}
               <div 
                 className="relative h-80 w-full rounded-xl overflow-hidden cursor-pointer bg-gray-800"
                 onClick={() => openImageModal(account?.image, 0)}
@@ -143,7 +140,6 @@ const AccountDetailsModal = ({ account, onClose }) => {
                 </div>
               </div>
 
-              {/* Thumbnail Gallery */}
               <div className="space-y-2">
                 <h3 className="text-sm font-bold text-white">
                   More Images ({altImages.length})
@@ -224,9 +220,6 @@ const AccountDetailsModal = ({ account, onClose }) => {
                   )}
                 </div>
               </div>
-
-              {/* Purchase Button */}
-            
             </div>
           </div>
         </div>

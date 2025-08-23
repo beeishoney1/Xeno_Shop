@@ -1,321 +1,186 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import logo from './../img/logo.jpg';
-import { motion, AnimatePresence } from 'framer-motion';
-import { BiLock } from 'react-icons/bi';
-import { FaTiktok, FaTelegramPlane, FaTimes } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { FaTelegram, FaTiktok } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "./../img/logo.jpg";
+import { BiLock } from "react-icons/bi";
 
-const Nav = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [showPinModal, setShowPinModal] = useState(false);
-  const [showTikTokModal, setShowTikTokModal] = useState(false);
-  const [showTelegramModal, setShowTelegramModal] = useState(false);
-  const [pin, setPin] = useState('');
-  const [error, setError] = useState('');
+export default function Nav() {
+  const [modalType, setModalType] = useState(null);
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-const ADMIN_PIN = "1234342342434222345673463"; // Replace with your actual PIN
 
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleLockClick = () => {
-    setShowPinModal(true);
-    setPin('');
-    setError('');
+  const openModal = (type) => {
+    setModalType(type);
+    setError("");
+    setPin("");
   };
 
-  const verifyPin = () => {
-    if (pin === ADMIN_PIN) {
-      navigate('/admindashboard');
-      setShowPinModal(false);
+  const closeModal = () => {
+    setModalType(null);
+    setError("");
+    setPin("");
+  };
+
+  useEffect(() => {
+    if (modalType) {
+      document.body.style.overflow = "hidden";
     } else {
-      setError('Incorrect PIN. Please try again.');
+      document.body.style.overflow = "auto";
+    }
+  }, [modalType]);
+
+  const handlePinSubmit = () => {
+    if (pin === "324823094723094823402348") {
+      closeModal();
+      navigate("/admindashboard");
+    } else {
+      setError("❌ Incorrect PIN, try again.");
     }
   };
 
-  const isModalOpen = showPinModal || showTikTokModal || showTelegramModal;
-
   return (
-    <>
-      {/* Main Content */}
-      <div className={`relative ${isModalOpen ? 'overflow-hidden h-screen' : ''}`}>
-        {/* Navbar with Tabs */}
-        <div className={`sticky top-0 z-30 ${isModalOpen ? 'filter blur-sm' : ''}`}>
-          {/* Navbar */}
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`navbar bg-gradient-to-r from-gray-900 via-purple-900 to-gray-800 text-white shadow-xl ${scrolled ? 'py-2' : 'py-4'}`}
+    <div>
+      {/* Header */}
+      <div className="flex justify-between items-center w-full px-4 py-4 md:px-6 md:py-6 animate-[fadeDown_1s_ease]">
+        {/* Logo + Title */}
+        <div className="flex items-center gap-3 md:gap-4">
+          <img
+            src={logo}
+            alt="Logo"
+            className="w-12 h-12 md:w-16 md:h-16 rounded-md"
+          />
+          <h2
+            className="text-4xl md:text-3xl font-extrabold mb-4 md:mb-6 uppercase
+                       bg-gradient-to-b from-yellow-300 to-orange-600 bg-clip-text text-transparent"
           >
-            <div className="navbar-start">
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center space-x-3 cursor-pointer"
-              >
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-purple-500/50 shadow-lg">
-                  <img 
-                    src={logo} 
-                    alt="Xeno Logo" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="flex flex-col"
-                >
-                  <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-                    XENO
-                  </span>
-                  <span className="text-xs font-mono tracking-widest text-gray-300">
-                    GAMING MARKETPLACE
-                  </span>
-                </motion.div>
-              </motion.div>
-            </div>
-
-            <div className="navbar-center hidden lg:flex">
-              <motion.h1
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="text-xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600"
-              >
-                Welcome To Xeno Shop
-              </motion.h1>
-            </div>
-
-            <div className="navbar-end space-x-4">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setShowTelegramModal(true)}
-                className="btn btn-circle bg-white/10 hover:bg-white/20 transition-all"
-              >
-                <FaTelegramPlane className="text-xl" />
-              </motion.button>
-              
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setShowTikTokModal(true)}
-                className="btn btn-circle bg-white/10 hover:bg-white/20 transition-all"
-              >
-                <FaTiktok className="text-xl" />
-              </motion.button>
-              
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handleLockClick}
-                className="btn btn-circle bg-white/10 hover:bg-white/20 transition-all"
-              >
-                <BiLock className="text-xl" />
-              </motion.button>
-            </div>
-          </motion.div>
-
-          {/* Navigation Tabs */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex justify-center bg-gray-800/80 border-b border-purple-500/20"
-          >
-            <div className="tabs tabs-boxed bg-transparent gap-2 p-2 lg:p-3 w-full lg:w-auto">
-              <NavLink
-                to="/pubgaccount"
-                className={({ isActive }) =>
-                  `font-mono font-bold px-4 py-2 rounded-lg transition-all duration-300 ${
-                    isActive 
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-[1.02]' 
-                      : 'bg-white/5 text-white/80 hover:bg-white/10 hover:text-white'
-                  }`
-                }
-              >
-                PUBG ACCOUNTS
-              </NavLink>
-              <NavLink
-                to="/uc"
-                className={({ isActive }) =>
-                  `font-mono font-bold px-4 py-2 rounded-lg transition-all duration-300 ${
-                    isActive 
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-[1.02]' 
-                      : 'bg-white/5 text-white/80 hover:bg-white/10 hover:text-white'
-                  }`
-                }
-              >
-                UC
-              </NavLink>
-            </div>
-          </motion.div>
+            Xeno Shop
+          </h2>
         </div>
 
-        {/* Your page content goes here */}
-        <div className={`${isModalOpen ? 'filter blur-sm' : ''}`}>
-          {/* Add your content here */}
+        {/* Social Icons */}
+        <div className="flex gap-3 md:gap-4">
+          <div
+            onClick={() => openModal("tiktok")}
+            className="bg-black/70 w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center text-xl md:text-2xl hover:scale-110 transition duration-300 cursor-pointer"
+          >
+            <FaTiktok />
+          </div>
+          <div
+            onClick={() => openModal("telegram")}
+            className="bg-black/70 w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center text-xl md:text-2xl hover:scale-110 transition duration-300 cursor-pointer"
+          >
+            <FaTelegram />
+          </div>
+          <div
+            onClick={() => openModal("pin")}
+            className="bg-black/70 w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center text-xl md:text-2xl hover:scale-110 transition duration-300 cursor-pointer"
+          >
+            <BiLock />
+          </div>
         </div>
       </div>
 
-      {/* Modal Overlay */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.5 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black z-40"
-            onClick={() => {
-              setShowPinModal(false);
-              setShowTikTokModal(false);
-              setShowTelegramModal(false);
-            }}
-          />
-        )}
-      </AnimatePresence>
+      {/* Nav Bar */}
+      <div className="bg-black-/50 backdrop-blur-md flex justify-between items-center w-[90%] md:w-[50%] mx-auto px-6 md:px-8 py-2 md:py-3 rounded-lg shadow-md animate-[fadeIn_1.2s_ease]">
+        <Link
+          to="/home"
+          className="bg-black/80 text-white font-bold px-4 md:px-6 py-1.5 md:py-2 rounded-lg hover:bg-black transition"
+        >
+          Account
+        </Link>
+        <div className="flex gap-6 md:gap-8 text-xl md:text-2xl"></div>
+        <Link
+          to=""
+          className="bg-black/80 text-white font-bold px-4 md:px-6 py-1.5 md:py-2 rounded-lg hover:bg-black transition"
+        >
+          UC
+        </Link>
+      </div>
 
-      {/* Modals */}
-      <AnimatePresence>
-        {/* PIN Modal */}
-        {showPinModal && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: 'spring', damping: 20 }}
-            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+      {/* Modal */}
+      {modalType && modalType !== "pin" && (
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-50"
+          onClick={closeModal}
+        >
+          <div
+            className="bg-black/90 text-white rounded-xl shadow-2xl w-11/12 max-w-md p-6 text-center relative animate-fadeIn"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-gray-800 p-6 rounded-lg shadow-xl border border-purple-500/30 w-full max-w-md relative mx-auto">
-              <button
-                onClick={() => setShowPinModal(false)}
-                className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
-              >
-                <FaTimes className="text-xl" />
-              </button>
-              
-              <h3 className="text-xl font-bold text-white mb-4">Admin Access</h3>
-              <p className="text-gray-300 mb-4">Please enter admin PIN:</p>
-              
-              <input
-                type="password"
-                value={pin}
-                onChange={(e) => setPin(e.target.value)}
-                className="w-full bg-gray-700 text-white px-4 py-2 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Enter PIN"
-                onKeyDown={(e) => e.key === 'Enter' && verifyPin()}
-              />
-              
-              {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
-              
-              <div className="flex justify-end space-x-3">
-                <button
-                  onClick={() => setShowPinModal(false)}
-                  className="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-500 transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={verifyPin}
-                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition"
-                >
-                  Verify
-                </button>
-              </div>
+            <button
+              onClick={closeModal}
+              className="absolute top-3 right-3 text-gray-400 hover:text-white text-xl"
+            >
+              ✕
+            </button>
+            <h3 className="text-2xl font-bold mb-4">
+              {modalType === "tiktok" ? "Follow on TikTok" : "Join Telegram"}
+            </h3>
+            <p className="text-gray-300 mb-6 text-sm">
+              {modalType === "tiktok"
+                ? "Stay updated with our TikTok videos and offers!"
+                : "Get instant updates and support in our Telegram channel."}
+            </p>
+            <div className="bg-gray-800/80 rounded-lg px-4 py-3 mb-5 text-blue-400 text-sm font-mono">
+              {modalType === "tiktok"
+                ? "https://www.tiktok.com/@yourusername"
+                : "https://t.me/yourtelegram"}
             </div>
-          </motion.div>
-        )}
+            <a
+              href={
+                modalType === "tiktok"
+                  ? "https://www.tiktok.com/@yourusername"
+                  : "https://t.me/yourtelegram"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`block w-full py-3 rounded-lg font-bold text-lg transition ${
+                modalType === "tiktok"
+                  ? "bg-gradient-to-r from-pink-600 to-purple-700 hover:from-pink-500 hover:to-purple-600"
+                  : "bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700"
+              }`}
+            >
+              Open {modalType === "tiktok" ? "TikTok" : "Telegram"}
+            </a>
+          </div>
+        </div>
+      )}
 
-        {/* TikTok Modal */}
-        {showTikTokModal && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: 'spring', damping: 20 }}
-            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+      {/* 🔑 PIN Modal */}
+      {modalType === "pin" && (
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-50"
+          onClick={closeModal}
+        >
+          <div
+            className="bg-black/90 text-white rounded-xl shadow-2xl w-11/12 max-w-md p-6 text-center relative animate-fadeIn"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-gray-800 p-6 rounded-lg shadow-xl border border-purple-500/30 w-full max-w-md relative mx-auto">
-              <button
-                onClick={() => setShowTikTokModal(false)}
-                className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
-              >
-                <FaTimes className="text-xl" />
-              </button>
-              
-              <div className="flex items-center justify-center mb-4">
-                <FaTiktok className="text-3xl text-pink-500 mr-3" />
-                <h3 className="text-xl font-bold text-white">Our TikTok Profile</h3>
-              </div>
-              <p className="text-gray-300 mb-4 text-center">Follow us on TikTok for the latest updates!</p>
-              
-              <div className="bg-gray-700 p-3 rounded-lg mb-4 break-all">
-                <p className="text-white font-mono text-sm md:text-base">No Tik Tok account yet..</p>
-              </div>
-              
-              <div className="flex justify-center">
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition flex items-center"
-                >
-                  <FaTiktok className="mr-2" /> Open TikTok
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Telegram Modal */}
-        {showTelegramModal && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: 'spring', damping: 20 }}
-            className="fixed inset-0 flex items-center justify-center z-50 p-4"
-          >
-            <div className="bg-gray-800 p-6 rounded-lg shadow-xl border border-purple-500/30 w-full max-w-md relative mx-auto">
-              <button
-                onClick={() => setShowTelegramModal(false)}
-                className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
-              >
-                <FaTimes className="text-xl" />
-              </button>
-              
-              <div className="flex items-center justify-center mb-4">
-                <FaTelegramPlane className="text-3xl text-blue-400 mr-3" />
-                <h3 className="text-xl font-bold text-white">Direct To Admin</h3>
-              </div>
-              <p className="text-gray-300 mb-4 text-center">Join our Telegram for more offers!</p>
-              
-              <div className="bg-gray-700 p-3 rounded-lg mb-4 break-all">
-                <p className="text-white font-mono text-sm md:text-base">https://t.me/XenoFav_M</p>
-              </div>
-              
-              <div className="flex justify-center">
-                <a
-                  href="https://t.me/XenoFav_M"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition flex items-center"
-                >
-                  <FaTelegramPlane className="mr-2" /> Open Telegram
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+            <button
+              onClick={closeModal}
+              className="absolute top-3 right-3 text-gray-400 hover:text-white text-xl"
+            >
+              ✕
+            </button>
+            <h3 className="text-2xl font-bold mb-4">Enter Admin PIN</h3>
+            <input
+              type="password"
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white text-center focus:outline-none focus:ring-2 focus:ring-purple-500"
+              placeholder="Enter PIN"
+            />
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+            <button
+              onClick={handlePinSubmit}
+              className="w-full mt-4 py-3 rounded-lg font-bold text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 transition"
+            >
+              Unlock
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
-};
-
-export default Nav;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import Nav from './Nav';
 
 const API_BASE_URL = 'https://beeishappy15.pythonanywhere.com';
 
@@ -19,7 +20,7 @@ async function fetchAPI(endpoint, method = 'GET', data = null, isFormData = fals
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, requestOptions);
     const responseClone = response.clone(); // Clone for error handling
-    
+
     if (!response.ok) {
       let errorData;
       try {
@@ -312,8 +313,10 @@ const AdminComponent = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-800 text-white overflow-hidden relative">
+      <Nav />
       {/* Background Animation */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none backdrop-blur-sm">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none ">
+        
         {particles.map((particle) => (
           <motion.div
             key={particle.id}
