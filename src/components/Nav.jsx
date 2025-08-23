@@ -124,14 +124,14 @@ export default function Nav() {
             </p>
             <div className="bg-gray-800/80 rounded-lg px-4 py-3 mb-5 text-blue-400 text-sm font-mono">
               {modalType === "tiktok"
-                ? "https://www.tiktok.com/@yourusername"
-                : "https://t.me/yourtelegram"}
+                ? "no tik tok yet"
+                : "http://t.me/+5e7pujcnTEM2ZTM1"}
             </div>
             <a
               href={
                 modalType === "tiktok"
-                  ? "https://www.tiktok.com/@yourusername"
-                  : "https://t.me/yourtelegram"
+                  ? "no tik tok yet"
+                  : "http://t.me/+5e7pujcnTEM2ZTM1"
               }
               target="_blank"
               rel="noopener noreferrer"
